@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+import requests as rq
 
 
 def create_app(test_config=None):
@@ -36,5 +37,8 @@ def create_app(test_config=None):
     from . import blog
     app.register_blueprint(blog.bp)
     app.add_url_rule('/', endpoint='index')
+
+    from . import apiuse
+    app.register_blueprint(apiuse.bp)
 
     return app

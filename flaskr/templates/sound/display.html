@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block header %}
+<h1>{% block title %}Display Random Api Content{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<script>
+    function translateDothraki(){
+      console.log('runs')
+      var text = document.getElementById('body').value
+      text = text.replaceAll(' ', '%')
+      const responseDiv = document.getElementById('translated')
+      const content = document.createElement('p')
+      var request = new XMLHttpRequest()
+      const urlRequest = 'https://api.funtranslations.com/translate/dothraki.json'
+      request.open('POST', urlRequest)
+      request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      request.onreadystatechange = function(){
+        var json = JSON.parse(this.response)
+        console.log(json)
+        if(json.hasOwnProperty('error')){
+            content.textContent= `${json.error.message}`
+        } else {
+        content.textContent= `${json.contents.translated}` }
+        responseDiv.appendChild(content)
+        }
+      request.send("text="+text)
+      }
+
+</script>
+<h4>Display a Chuck Norris Joke</h4>
+<img src="{{ img }}">
+<p>{{ randomJoke }}</p>
+
+<h4>Translate some Dothraki</h4>
+<form>
+    <textarea name="body" id="body"></textarea>
+    <input type="button" value="Translate" onclick="translateDothraki()">
+</form>
+<div id="translated">
+</div>
+
+{% endblock %}
